@@ -44,5 +44,3 @@ operations/variable-scripts/variable.json
 # Sentinel runtime directory
 .sentinel
 
-# For shared credentials
-.aws/
