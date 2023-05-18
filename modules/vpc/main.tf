@@ -1,3 +1,6 @@
+locals { 
+  az_count = length(var.availability_zones) 
+}
 resource "aws_vpc" "main" {
   cidr_block       = var.vpc_cidr_block
   instance_tenancy = "default"
@@ -9,11 +12,11 @@ resource "aws_vpc" "main" {
 
 # Create public subnets in each AZ
 resource "aws_subnet" "public_subnets" {
-  count      = var.public_subnet_count * length(var.availability_zones)
+  count      = var.public_subnet_count * local.az_count
   vpc_id     = aws_vpc.main.id
 
-  cidr_block = cidrsubnet(var.vpc_cidr_block, var.public_subnet_bits, count.index + 1)
-  availability_zone = var.availability_zones[count.index % length(var.availability_zones)]
+  cidr_block = cidrsubnet(var.vpc_cidr_block, var.subnet_bits, count.index + 1)
+  availability_zone = var.availability_zones[count.index % local.az_count]
   map_public_ip_on_launch = true
 
   tags = {
@@ -23,11 +26,12 @@ resource "aws_subnet" "public_subnets" {
 
 # Create private subnets in each AZ
 resource "aws_subnet" "private_subnets" {
-  count      = var.private_subnet_count * length(var.availability_zones)
+  count      = var.private_subnet_count * local.az_count
   vpc_id     = aws_vpc.main.id
 
-  cidr_block = cidrsubnet(var.vpc_cidr_block, var.private_subnet_bits, count.index + 1)
-  availability_zone = var.availability_zones[count.index % length(var.availability_zones)]
+  #var.public_subnet_count * length(var.availability_zones) + count.index + 1 es para empezar a crear las subnets con el desplazamiento de las publicas.
+  cidr_block = cidrsubnet(var.vpc_cidr_block, var.subnet_bits, var.public_subnet_count * local.az_count + count.index + 1) 
+  availability_zone = var.availability_zones[(var.public_subnet_count * local.az_count + count.index ) % local.az_count]
   map_public_ip_on_launch = false
 
   tags = {
@@ -70,14 +74,14 @@ resource "aws_route_table" "private" {
 }
 
 resource "aws_route_table_association" "public_associations" {
-  count          = var.public_subnet_count * length(var.availability_zones)
-  subnet_id      = aws_subnet.public_subnets[count.index % length(var.availability_zones)].id
+  count          = var.public_subnet_count * local.az_count
+  subnet_id      = aws_subnet.public_subnets[count.index].id
   route_table_id = aws_route_table.public.id
 }
 
 resource "aws_route_table_association" "private_associations" {
-  count = var.private_subnet_count * length(var.availability_zones)
-  subnet_id      = aws_subnet.private_subnets[count.index % length(var.availability_zones)].id
+  count = var.private_subnet_count * local.az_count
+  subnet_id      = aws_subnet.private_subnets[count.index].id
   route_table_id = aws_route_table.private.id
 }
 
