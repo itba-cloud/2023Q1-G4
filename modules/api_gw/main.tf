@@ -9,7 +9,7 @@ resource "aws_api_gateway_rest_api" "this" {
 resource "aws_api_gateway_resource" "this" {
   parent_id   = aws_api_gateway_rest_api.this.root_resource_id
   rest_api_id = aws_api_gateway_rest_api.this.id
-  path_part   = "query"
+  path_part   = var.lambda_func_name
 }
 
 resource "aws_api_gateway_method" "this" {
@@ -24,7 +24,7 @@ resource "aws_api_gateway_integration" "this" {
   resource_id             = aws_api_gateway_resource.this.id
   http_method             = aws_api_gateway_method.this.http_method
   integration_http_method = "POST"
-  type                    = "AWS_PROXY"
+  type                    = "AWS"
   uri                     = var.lambda_func_arn
 }
 
