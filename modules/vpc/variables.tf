@@ -11,8 +11,8 @@ variable "vpc_cidr_block" {
 variable "subnet_bits" {
   #Additional bits to borrow from the VPC CIDR block for public and private subnets
   #second parameter for cidrsubnet, the default is 8 so the subnets will be /24
-  type    = number
-  default = 8
+  type        = number
+  default     = 8
   description = "Bits from the VPC CIDR block for public and private subnets"
 }
 

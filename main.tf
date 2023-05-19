@@ -46,17 +46,17 @@ module "cdn" {
 }
 
 module "web_site" {
-  source            = "./modules/static_site"
-  bucket_name       = "cloud-2023-1q-g4"
+  source        = "./modules/static_site"
+  bucket_name   = "cloud-2023-1q-g4"
   bucket_access = [aws_cloudfront_origin_access_identity.this.iam_arn]
 }
 
 
 # TODO: move this to s3 module
 resource "aws_s3_object" "data" {
-  bucket = module.web_site.bucket_id
-  key    = "index.html"
-  source = "./index.html"
+  bucket       = module.web_site.bucket_id
+  key          = "index.html"
+  source       = "./index.html"
   content_type = "text/html"
 }
 

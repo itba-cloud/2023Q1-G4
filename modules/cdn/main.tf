@@ -29,7 +29,7 @@ resource "aws_cloudfront_distribution" "this" {
     viewer_protocol_policy = "allow-all" # TODO: capaz cambiar a https-only
 
     # Estas variables estan comentadas ya que las maneja la policy
-    min_ttl                = 0
+    min_ttl = 0
     #default_ttl            = 3600
     #max_ttl                = 86400
   }

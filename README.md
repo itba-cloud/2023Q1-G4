@@ -4,11 +4,11 @@
 
 | Nombre | Legajo | Participación |
 | ------ | ------ | ------------- |
-| [Ana Cruz](https://github.com/anitacruz) | 60476 |  |
-| [Matías Lombardi](https://github.com/matiaslombardi) | 60527 |  |
-| [Gian Luca Pecile](https://github.com/glpecile) | 59235 |  |
-| [Salustiano Zavalía](https://github.com/szavalia) | 60312 |  |
-| [Lucas Gomez](https://github.com/lusegomez) | 60408 |  |
+| [Ana Cruz](https://github.com/anitacruz) | 60476 | 20% |
+| [Matías Lombardi](https://github.com/matiaslombardi) | 60527 | 20% |
+| [Gian Luca Pecile](https://github.com/glpecile) | 59235 | 20% |
+| [Salustiano Zavalía](https://github.com/szavalia) | 60312 | 20% |
+| [Lucas Gomez](https://github.com/lusegomez) | 60408 | 20% |
 
 ## Ejecución
 
@@ -63,7 +63,7 @@ Para la configuración de CloudFront se utilizó el módulo [`aws_cloudfront_dis
 
 ### API Gateway
 
-![API Gateway](/assets/api_gw.png)
+![API Gateway](/assets/lambda.png)
 
 Para la configuración de API Gateway se utilizó el módulo [`aws_api_gateway_rest_api`](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_rest_api).
 

@@ -1,7 +1,7 @@
 module "logs" {
-  source        = "terraform-aws-modules/s3-bucket/aws"
-  bucket        = local.logs_bucket
-  acl           = "log-delivery-write"
+  source = "terraform-aws-modules/s3-bucket/aws"
+  bucket = local.logs_bucket
+  acl    = "log-delivery-write"
 
   force_destroy = true
 
