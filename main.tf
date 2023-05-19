@@ -23,7 +23,7 @@ resource "aws_s3_object" "data" {
 
 module "vpc" {
   source             = "./modules/vpc"
-  availability_zones = ["us-east-1a", "us-east-1b"]
+  availability_zones = ["${local.current_region}a", "${local.current_region}c"]
 
   # These are the subnets that will be created IN EACH AZ
   public_subnet_count  = 1

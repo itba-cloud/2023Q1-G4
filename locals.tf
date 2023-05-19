@@ -7,4 +7,6 @@ locals {
   # iam_role_arn = "arn:aws:iam::143422629436:role/LabRole"
 
   s3_bucket_name = "cloud-2023-1q-g4"
+
+  current_region = data.aws_region.current.name
 }

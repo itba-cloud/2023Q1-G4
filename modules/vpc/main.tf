@@ -2,7 +2,6 @@ locals {
   az_count = length(var.availability_zones)
 }
 
-
 resource "aws_vpc" "main" {
   cidr_block       = var.vpc_cidr_block
   instance_tenancy = "default"
@@ -69,7 +68,7 @@ resource "aws_route_table" "private" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.main.id # TODO: Change this to a NAT gateway
+    gateway_id = aws_internet_gateway.main.id 
   }
 
   tags = {
@@ -100,16 +99,7 @@ resource "aws_security_group" "default" {
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = [aws_vpc.main.cidr_block]
-    # ipv6_cidr_blocks = [aws_vpc.main.ipv6_cidr_block]
   }
-
-  # egress {
-  #   from_port        = 0
-  #   to_port          = 0
-  #   protocol         = "-1"
-  #   cidr_blocks      = ["0.0.0.0/0"]
-  #   ipv6_cidr_blocks = ["::/0"]
-  # }
 
   tags = {
     Name = "allow_tls"
