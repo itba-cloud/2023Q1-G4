@@ -1,7 +1,7 @@
 module "logs" {
-  source = "terraform-aws-modules/s3-bucket/aws"
-  bucket = local.logs_bucket
-  acl    = "log-delivery-write"
+  source        = "terraform-aws-modules/s3-bucket/aws"
+  bucket_prefix = local.logs_bucket
+  acl           = "log-delivery-write"
 
   force_destroy = true
 
@@ -40,7 +40,7 @@ Este seria el bucket www, pero al redireccionar y acceder desde Cloudfront, tira
 
 module "static_site" {
   source        = "terraform-aws-modules/s3-bucket/aws"
-  bucket        = var.bucket_name
+  bucket_prefix = var.bucket_name
   attach_policy = true
   policy        = data.aws_iam_policy_document.this.json
 

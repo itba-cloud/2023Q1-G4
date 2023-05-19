@@ -1,6 +1,6 @@
 # Cloud Computing
 
-## Grilla
+## Integrantes
 
 | Nombre | Legajo | Participación |
 | ------ | ------ | ------------- |
@@ -81,3 +81,20 @@ Por cuestiones de completitud también configuramos un Internet Gateway, tablas 
 ![Lambda](/assets/lambda.png)
 
 Para la configuración de Lambda se hace uso del módulo [`aws_lambda_function`](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function). En particular se utiliza el atributo [`lambda_function_in_vpc`](https://registry.terraform.io/modules/terraform-aws-modules/lambda/aws/latest#lambda-function-in-vpc) que permite ejecutar la función dentro de la VPC.
+
+## Referencias
+
+A continuación se detallan las funciones de terraform y los meta argumentos.
+
+### Funciones
+
+1. [`floor()`](modules/vpc/main.tf)
+2. [`jsonencode()`](modules/api_gw/main.tf)
+3. [`sha1()`](modules/api_gw/main.tf)
+4. [`cidrsubnet()`](modules/vpc/main.tf)
+
+### Meta Argumentos
+
+1. [`depends_on`](modules/api_gw/main.tf)
+2. [`for_each`](modules/acm/main.tf)
+3. [`count`](modules/vpc/main.tf)
