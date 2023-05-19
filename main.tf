@@ -60,11 +60,31 @@ resource "aws_s3_object" "data" {
   content_type = "text/html"
 }
 
-module "vpc" { 
-  source = "./modules/vpc"
-  availability_zones = [ "us-east-1a", "us-east-1b" ]
+module "vpc" {
+  source             = "./modules/vpc"
+  availability_zones = ["${local.current_region}a", "${local.current_region}c"]
 
   # These are the subnets that will be created IN EACH AZ
-  public_subnet_count = 1
+  public_subnet_count  = 1
   private_subnet_count = 2
+}
+
+module "lambda_function_in_vpc" {
+  #external module
+  source = "terraform-aws-modules/lambda/aws"
+
+  function_name = "post_daily"
+  description   = "Lambda function that creates a daily entry for a given user."
+  handler       = "helloPython.lambda_handler" #Lambda function entrypoint in your code. 
+  runtime       = "python3.9"
+
+
+  source_path = "resources/helloPython.py" #The absolute path to a local file or directory containing your Lambda source code
+
+  vpc_subnet_ids         = module.vpc.subnet_ids_by_tier["1"]
+  vpc_security_group_ids = [module.vpc.default_security_group_id]
+  attach_network_policy  = true
+
+  create_role = false
+  lambda_role = local.iam_role_arn
 }
