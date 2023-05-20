@@ -59,7 +59,7 @@ module "web_site" {
 resource "aws_s3_object" "data" {
   bucket       = module.web_site.bucket_id
   key          = "index.html"
-  source       = "./index.html"
+  source       = "resources/index.html"
   content_type = "text/html"
 }
 

@@ -1,4 +1,3 @@
-# FIXME: maybe just "name"
 variable "bucket_name" {
   description = "Name of the bucket"
   type        = string
