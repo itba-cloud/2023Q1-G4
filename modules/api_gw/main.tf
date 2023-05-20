@@ -1,5 +1,14 @@
 locals {
   lambda_function_count = length(var.lambda_functions)
+
+  resource_names = distinct([
+    for lambda in var.lambda_functions : lambda.entity
+  ])
+  resource_count = length(local.resource_names)
+
+  lambdas_by_entity = {
+    for lambda in var.lambda_functions : lambda.entity => lambda...
+  }
 }
 
 resource "aws_api_gateway_rest_api" "this" {
@@ -11,21 +20,28 @@ resource "aws_api_gateway_rest_api" "this" {
 }
 
 resource "aws_api_gateway_resource" "this" {
-  count = local.lambda_function_count
+  count = local.resource_count
 
-  parent_id   = aws_api_gateway_rest_api.this.root_resource_id
   rest_api_id = aws_api_gateway_rest_api.this.id
-  path_part   = var.lambda_functions[count.index].name # users
+  parent_id   = aws_api_gateway_rest_api.this.root_resource_id
+  path_part   = local.resource_names[count.index]
+}
+
+locals {
+  resources_id_by_entity = {
+    for resource in aws_api_gateway_resource.this : resource.path_part => resource.id
+  }
 }
 
 resource "aws_api_gateway_method" "this" {
   count = local.lambda_function_count
 
   rest_api_id   = aws_api_gateway_rest_api.this.id
-  resource_id   = aws_api_gateway_resource.this[count.index].id # users
-  http_method   = var.lambda_functions[count.index].method # depende de la lambda
+  resource_id = local.resources_id_by_entity[var.lambda_functions[count.index].entity]
+  http_method   = var.lambda_functions[count.index].method
   authorization = "NONE"
 }
+
 
 resource "aws_api_gateway_integration" "this" {
   count = local.lambda_function_count
@@ -39,28 +55,25 @@ resource "aws_api_gateway_integration" "this" {
 }
 
 resource "aws_api_gateway_deployment" "this" {
-  count = local.lambda_function_count
   
   rest_api_id = aws_api_gateway_rest_api.this.id
   triggers = {
     deploy = sha1(jsonencode([
-      aws_api_gateway_resource.this[count.index].id,
-      aws_api_gateway_method.this[count.index].id,
-      aws_api_gateway_integration.this[count.index].id
+      aws_api_gateway_resource.this,
+      aws_api_gateway_method.this,
+      aws_api_gateway_integration.this
     ]))
   }
 }
 
 resource "aws_api_gateway_stage" "this" {
-  count = local.lambda_function_count
-
   depends_on = [
     aws_api_gateway_integration.this,
   ]
 
-  deployment_id = aws_api_gateway_deployment.this[count.index].id
+  deployment_id = aws_api_gateway_deployment.this.id
   rest_api_id   = aws_api_gateway_rest_api.this.id
-  stage_name    = join("-", tolist([var.lambda_functions[count.index].name, var.rest_api_stage_name]))
+  stage_name    = var.rest_api_stage_name
 }
 
 resource "aws_lambda_permission" "this" {
@@ -70,5 +83,5 @@ resource "aws_lambda_permission" "this" {
   action        = "lambda:InvokeFunction"
   function_name = var.lambda_functions[count.index].name
   principal     = "apigateway.amazonaws.com"
-  source_arn   = "${aws_api_gateway_rest_api.this.execution_arn}/*/${aws_api_gateway_method.this[count.index].http_method}/${aws_api_gateway_resource.this[count.index].path_part}"
+  source_arn   = "${aws_api_gateway_rest_api.this.execution_arn}/*/*"
 }
