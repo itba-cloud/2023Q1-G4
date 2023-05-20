@@ -3,7 +3,7 @@ module "api_gw" {
   source              = "./modules/api_gw"
   rest_api_desc       = local.api_description
   rest_api_name       = local.api_name
-  rest_api_tag_name   = local.api_ta
+  rest_api_tag_name   = local.api_tag_name
   rest_api_stage_name = local.api_stage_name
 
   lambda_functions = module.lambda.lambda_functions
