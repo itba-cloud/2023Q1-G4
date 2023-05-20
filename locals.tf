@@ -1,4 +1,9 @@
 locals {
+  api_description = "API gateway for the lambdas"
+  api_name        = "API-GW-G4"
+  api_tag_name    = "API Gateway"
+  api_stage_name  = "api"
+
   account_id = data.aws_caller_identity.current.account_id
 
   # ARN of the IAM role to assume, particular to the Learner Lab account
