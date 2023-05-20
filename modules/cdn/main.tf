@@ -28,7 +28,7 @@ resource "aws_cloudfront_distribution" "this" {
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = var.static_site
+    target_origin_id = var.web_origin_id 
 
     cache_policy_id = data.aws_cloudfront_cache_policy.caching_optimized.id
 
