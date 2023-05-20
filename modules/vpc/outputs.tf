@@ -21,5 +21,5 @@ output "subnet_ids_by_tier" {
 
 output "default_security_group_id" {
   description = "ID of the default security group"
-  value = aws_security_group.default.id
+  value       = aws_security_group.default.id
 }

@@ -32,14 +32,14 @@ resource "aws_cloudfront_distribution" "this" {
 
     cache_policy_id = data.aws_cloudfront_cache_policy.caching_optimized.id
 
-    viewer_protocol_policy = "https-only" 
+    viewer_protocol_policy = "https-only"
   }
 
   ordered_cache_behavior {
     allowed_methods  = ["GET", "HEAD"]
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = var.api_origin_id
-    path_pattern = "/api/*"
+    path_pattern     = "/api/*"
 
     cache_policy_id = data.aws_cloudfront_cache_policy.caching_disabled.id
 

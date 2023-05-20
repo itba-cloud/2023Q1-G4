@@ -5,7 +5,7 @@ variable "static_site" {
 
 variable "web_origin_id" {
   description = "Id of the web origin."
-  type = string
+  type        = string
 }
 
 variable "OAI" {
@@ -30,5 +30,5 @@ variable "api_domain" {
 
 variable "api_origin_id" {
   description = "Id of the api origin."
-  type = string
+  type        = string
 }

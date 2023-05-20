@@ -18,10 +18,10 @@ variable "rest_api_stage_name" {
 variable "lambda_functions" {
   description = "List of Lambda functions to create"
   type = list(object({
-    name = string
+    name       = string
     invoke_arn = string
-    entity = string
-    method = string
+    entity     = string
+    method     = string
   }))
 }
 

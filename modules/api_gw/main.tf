@@ -34,7 +34,7 @@ resource "aws_api_gateway_method" "this" {
   count = local.lambda_function_count
 
   rest_api_id   = aws_api_gateway_rest_api.this.id
-  resource_id = local.resources_id_by_entity[var.lambda_functions[count.index].entity]
+  resource_id   = local.resources_id_by_entity[var.lambda_functions[count.index].entity]
   http_method   = var.lambda_functions[count.index].method
   authorization = "NONE"
 }
@@ -42,7 +42,7 @@ resource "aws_api_gateway_method" "this" {
 
 resource "aws_api_gateway_integration" "this" {
   count = local.lambda_function_count
-  
+
   rest_api_id             = aws_api_gateway_rest_api.this.id
   resource_id             = aws_api_gateway_method.this[count.index].resource_id
   http_method             = aws_api_gateway_method.this[count.index].http_method
@@ -52,7 +52,7 @@ resource "aws_api_gateway_integration" "this" {
 }
 
 resource "aws_api_gateway_deployment" "this" {
-  
+
   rest_api_id = aws_api_gateway_rest_api.this.id
   triggers = {
     deploy = sha1(jsonencode([
@@ -80,5 +80,5 @@ resource "aws_lambda_permission" "this" {
   action        = "lambda:InvokeFunction"
   function_name = var.lambda_functions[count.index].name
   principal     = "apigateway.amazonaws.com"
-  source_arn   = "${aws_api_gateway_rest_api.this.execution_arn}/*/*"
+  source_arn    = "${aws_api_gateway_rest_api.this.execution_arn}/*/*"
 }

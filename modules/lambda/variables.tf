@@ -1,13 +1,13 @@
 variable "lambda_functions" {
   description = "List of Lambda functions to create"
   type = list(object({
-    name = string
-    description   = string
-    handler       = string
-    runtime       = string
-    source_path   = string
-    entity = string
-    method = string
+    name        = string
+    description = string
+    handler     = string
+    runtime     = string
+    source_path = string
+    entity      = string
+    method      = string
   }))
 }
 

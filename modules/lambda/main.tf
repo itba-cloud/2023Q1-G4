@@ -1,5 +1,5 @@
 module "external_lambda" {
-  count = length(var.lambda_functions)
+  count  = length(var.lambda_functions)
   source = "terraform-aws-modules/lambda/aws"
 
   function_name = var.lambda_functions[count.index].name
@@ -17,6 +17,6 @@ module "external_lambda" {
 
   tags = {
     entity = var.lambda_functions[count.index].entity
-    method  = var.lambda_functions[count.index].method
+    method = var.lambda_functions[count.index].method
   }
 }

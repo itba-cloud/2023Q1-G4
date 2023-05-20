@@ -73,7 +73,7 @@ module "vpc" {
   private_subnet_count = 2
 }
 
-module "lambda"{
+module "lambda" {
   #external module
   source = "./modules/lambda"
 
@@ -82,6 +82,6 @@ module "lambda"{
   vpc_subnet_ids         = module.vpc.subnet_ids_by_tier["1"]
   vpc_security_group_ids = [module.vpc.default_security_group_id]
   attach_network_policy  = true
-  create_role = false // Esto esta así ya que de no estar no funciona por permisos del Lab
-  lambda_role = local.iam_role_arn
+  create_role            = false // Esto esta así ya que de no estar no funciona por permisos del Lab
+  lambda_role            = local.iam_role_arn
 }
