@@ -6,9 +6,6 @@ locals {
   ])
   resource_count = length(local.resource_names)
 
-  lambdas_by_entity = {
-    for lambda in var.lambda_functions : lambda.entity => lambda...
-  }
 }
 
 resource "aws_api_gateway_rest_api" "this" {
