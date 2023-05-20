@@ -17,13 +17,14 @@ resource "aws_cloudfront_origin_access_identity" "this" {
 /*
 Esta seria la manera correcta (updateada de OAI) de dar permisos para acceder a S3,
 por cuestión de tiempos y pruebas decidimos quedarnos con OAI
-*/
+
 resource "aws_cloudfront_origin_access_control" "this" {
  name                              = "S3 Access Control"
  origin_access_control_origin_type = "s3"
  signing_behavior                  = "always"
  signing_protocol                  = "sigv4"
 }
+*/
 
 module "acm" {
   source      = "./modules/acm"
@@ -49,8 +50,9 @@ module "cdn" {
 }
 
 module "web_site" {
+  #external module
   source        = "./modules/static_site"
-  bucket_name   = "cloud-2023-1q-g4"
+  bucket_name   = local.s3_bucket_name
   bucket_access = [aws_cloudfront_origin_access_identity.this.iam_arn]
 }
 
@@ -65,7 +67,7 @@ resource "aws_s3_object" "data" {
 
 module "vpc" {
   source             = "./modules/vpc"
-  availability_zones = ["${local.current_region}a", "${local.current_region}c"]
+  availability_zones = ["${local.current_region}a", "${local.current_region}b"]
 
   # These are the subnets that will be created IN EACH AZ
   public_subnet_count  = 1
@@ -81,7 +83,6 @@ module "lambda"{
   vpc_subnet_ids         = module.vpc.subnet_ids_by_tier["1"]
   vpc_security_group_ids = [module.vpc.default_security_group_id]
   attach_network_policy  = true
-
-  create_role = false
+  create_role = false // Esto esta así ya que de no estar no funciona por permisos del Lab
   lambda_role = local.iam_role_arn
 }
