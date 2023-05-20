@@ -3,6 +3,11 @@ variable "static_site" {
   type        = string
 }
 
+variable "web_origin_id" {
+  description = "Id of the web origin."
+  type = string
+}
+
 variable "OAI" {
   description = "The Origin Access Identity path for S3"
   type        = string
@@ -16,4 +21,14 @@ variable "alias" {
 variable "certificate_arn" {
   description = "ARN of the certificate to use for the Cloudfront distribution"
   type        = string
+}
+
+variable "api_domain" {
+  description = "Domain of the api."
+  type        = string
+}
+
+variable "api_origin_id" {
+  description = "Id of the api origin."
+  type = string
 }

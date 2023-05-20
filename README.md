@@ -28,6 +28,8 @@ El diagrama completo de la arquitectura se encuentra dentro de [`/assets/archite
 ## Módulos
 
 - VPC
+  - Security Group
+  - Route table
 - Lambda
 - Bucket S3
 - CloudFront

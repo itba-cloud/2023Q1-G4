@@ -7,7 +7,7 @@ resource "aws_cloudfront_distribution" "this" {
 
   origin {
     domain_name = var.static_site
-    origin_id   = var.static_site
+    origin_id   = var.static_site # TODO: change to ID
 
     #origin_access_control_id = aws_cloudfront_origin_access_control.this.id
     # TODO: decidir entre esto y origin access control
@@ -17,7 +17,17 @@ resource "aws_cloudfront_distribution" "this" {
     }
   }
 
-  # TODO: otro origin para la api
+  origin {
+    domain_name = replace(var.api_domain, "/^https?://([^/]*).*/", "$1")
+    origin_id   = var.api_origin_id
+    custom_origin_config {
+      http_port              = 80
+      https_port             = 443
+      origin_protocol_policy = "https-only"
+      origin_ssl_protocols   = ["TLSv1.2"]
+    }
+  }
+
 
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD"]
@@ -33,6 +43,19 @@ resource "aws_cloudfront_distribution" "this" {
     #default_ttl            = 3600
     #max_ttl                = 86400
   }
+
+  ordered_cache_behavior {
+    allowed_methods  = ["GET", "HEAD"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = var.api_origin_id
+    path_pattern = "/api/*"
+
+    cache_policy_id = data.aws_cloudfront_cache_policy.caching_disabled.id
+
+    viewer_protocol_policy = "allow-all" # TODO: capaz cambiar a https-only
+
+  }
+
   restrictions {
     geo_restriction {
       restriction_type = "none"

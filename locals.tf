@@ -10,6 +10,10 @@ locals {
 
   current_region = data.aws_region.current.name
 
+  api_origin_id = "api"
+
+  static_origin_id = "static"
+
   lambda_functions = [
     {
       name = "usersGet"
