@@ -57,7 +57,6 @@ module "web_site" {
 }
 
 
-# TODO: move this to s3 module
 resource "aws_s3_object" "data" {
   bucket       = module.web_site.bucket_id
   key          = "index.html"
