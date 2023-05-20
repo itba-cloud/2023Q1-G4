@@ -5,9 +5,7 @@ module "api_gw" {
   rest_api_name     = "API-GW-G4"
   rest_api_tag_name = "API Gateway"
 
-  depends_on = [ module.helloWorld ]
-  lambda_func_arn  = module.helloWorld.lambda_function_invoke_arn
-  lambda_func_name = module.helloWorld.lambda_function_name
+  lambda_functions = module.lambda.lambda_functions
 }
 
 
@@ -70,17 +68,11 @@ module "vpc" {
   private_subnet_count = 2
 }
 
-module "helloWorld"{
+module "lambda"{
   #external module
-  source = "terraform-aws-modules/lambda/aws"
+  source = "./modules/lambda"
 
-  function_name = "helloWorld"
-  description   = "Lambda function that is kind enough to greet you."
-  handler       = "helloPython.lambda_handler" #Lambda function entrypoint in your code. 
-  runtime       = "python3.9"
-
-
-  source_path = "resources/helloPython.py" #The absolute path to a local file or directory containing your Lambda source code
+  lambda_functions = local.lambda_functions
 
   vpc_subnet_ids         = module.vpc.subnet_ids_by_tier["1"]
   vpc_security_group_ids = [module.vpc.default_security_group_id]

@@ -9,4 +9,43 @@ locals {
   s3_bucket_name = "cloud-2023-1q-g4"
 
   current_region = data.aws_region.current.name
+
+  lambda_functions = [
+    {
+      name = "usersGet"
+      description   = "Gets user data"
+      handler       = "usersGet.lambda_handler"
+      runtime       = "python3.9"
+      source_path   = "resources/usersGet.py"
+      entity = "users"
+      method = "GET"
+    },
+    {
+      name = "usersPut"
+      description   = "Updates user data"
+      handler       = "usersPut.lambda_handler"
+      runtime       = "python3.9"
+      source_path   = "resources/usersPut.py"
+      entity = "users"
+      method = "PUT"
+    },
+    {
+      name = "usersPost"
+      description   = "Creates user data"
+      handler       = "usersPost.lambda_handler"
+      runtime       = "python3.9"
+      source_path   = "resources/usersPost.py"
+      entity = "users"
+      method = "POST"
+    },
+    {
+      name = "usersDelete"
+      description   = "Deletes user data"
+      handler       = "usersDelete.lambda_handler"
+      runtime       = "python3.9"
+      source_path   = "resources/usersDelete.py"
+      entity = "users"
+      method = "DELETE"
+    }
+  ]
 }
