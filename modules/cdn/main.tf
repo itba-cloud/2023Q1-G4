@@ -8,10 +8,8 @@ resource "aws_cloudfront_distribution" "this" {
     domain_name = var.static_site
     origin_id   = var.web_origin_id
 
-    #origin_access_control_id = aws_cloudfront_origin_access_control.this.id
     s3_origin_config {
       origin_access_identity = var.OAI
-      #origin_access_identity = aws_cloudfront_origin_access_identity.this.cloudfront_access_identity_path            
     }
   }
 
@@ -35,10 +33,6 @@ resource "aws_cloudfront_distribution" "this" {
     cache_policy_id = data.aws_cloudfront_cache_policy.caching_optimized.id
 
     viewer_protocol_policy = "https-only" 
-    # Estas variables estan comentadas ya que las maneja la policy
-    min_ttl = 0
-    #default_ttl            = 3600
-    #max_ttl                = 86400
   }
 
   ordered_cache_behavior {

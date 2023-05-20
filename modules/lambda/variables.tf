@@ -24,13 +24,11 @@ variable "vpc_security_group_ids" {
 variable "attach_network_policy" {
   description = "Whether to attach a network policy to the Lambda function"
   type        = bool
-  default     = false
 }
 
 variable "create_role" {
   description = "Whether to create IAM role for Lambda function"
   type        = bool
-  default     = true
 }
 
 variable "lambda_role" {

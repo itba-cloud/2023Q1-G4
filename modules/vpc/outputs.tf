@@ -13,11 +13,13 @@ output "vpc_main_data" {
 }
 
 output "subnet_ids_by_tier" {
+  description = "Map of subnet ids by tier"
   value = {
     for subnet in aws_subnet.private_subnets : subnet.tags["Tier"] => subnet.id...
   }
 }
 
 output "default_security_group_id" {
+  description = "ID of the default security group"
   value = aws_security_group.default.id
 }

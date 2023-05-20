@@ -1,5 +1,16 @@
-/*Intentamos con 2 politicas en donde solo cloudfront podia acceder a los bucket pero no funcionó
+data "aws_iam_policy_document" "this" {
+  statement {
+    actions   = ["s3:GetObject"]
+    resources = [module.static_site.s3_bucket_arn, "${module.static_site.s3_bucket_arn}/*"]
 
+    principals {
+      type        = "AWS"
+      identifiers = var.bucket_access
+    }
+  }
+}
+
+/*Intentamos con 2 politicas en donde solo cloudfront podia acceder a los bucket pero no funcionó
 data "aws_iam_policy_document" "www" {
   statement {
     actions   = ["s3:GetObject"]
@@ -36,15 +47,3 @@ data "aws_iam_policy_document" "site" {
   }
 }
 */
-
-data "aws_iam_policy_document" "this" {
-  statement {
-    actions   = ["s3:GetObject"]
-    resources = [module.static_site.s3_bucket_arn, "${module.static_site.s3_bucket_arn}/*"]
-
-    principals {
-      type        = "AWS"
-      identifiers = var.bucket_access
-    }
-  }
-}

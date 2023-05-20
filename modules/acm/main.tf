@@ -4,10 +4,6 @@ resource "aws_acm_certificate" "this" {
 
   subject_alternative_names = ["*.${var.base_domain}"]
 
-  tags = {
-    Name = "SSL Certificate for ${var.base_domain}"
-  }
-
   lifecycle {
     create_before_destroy = true
   }

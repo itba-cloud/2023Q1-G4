@@ -15,17 +15,8 @@ variable "rest_api_stage_name" {
   default     = "prod"
 }
 
-# variable "lambda_func_arn" {
-#   type        = string
-#   description = "The ARN of the Lambda function"
-# }
-
-# variable "lambda_func_name" {
-#   type        = string
-#   description = "The name of the Lambda function"
-# }
-
 variable "lambda_functions" {
+  description = "List of Lambda functions to create"
   type = list(object({
     name = string
     invoke_arn = string

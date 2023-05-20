@@ -1,6 +1,5 @@
 module "external_lambda" {
   count = length(var.lambda_functions)
-  #external module
   source = "terraform-aws-modules/lambda/aws"
 
   function_name = var.lambda_functions[count.index].name

@@ -1,7 +1,7 @@
 resource "aws_route53_record" "this" {
   name    = var.base_domain
   type    = "A"
-  zone_id = data.aws_route53_zone.this.zone_id # TODO: no olvidar, ya sabes que
+  zone_id = data.aws_route53_zone.this.zone_id
 
   alias {
     name                   = var.cdn.domain_name
