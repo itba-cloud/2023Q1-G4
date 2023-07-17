@@ -14,18 +14,6 @@ resource "aws_cloudfront_origin_access_identity" "this" {
   comment = "OAI for the static site"
 }
 
-/*
-Esta seria la manera correcta (updateada de OAI) de dar permisos para acceder a S3,
-por cuestión de tiempos y pruebas decidimos quedarnos con OAI
-
-resource "aws_cloudfront_origin_access_control" "this" {
- name                              = "S3 Access Control"
- origin_access_control_origin_type = "s3"
- signing_behavior                  = "always"
- signing_protocol                  = "sigv4"
-}
-*/
-
 module "acm" {
   source      = "./modules/acm"
   base_domain = var.base_domain
@@ -74,7 +62,6 @@ module "vpc" {
 }
 
 module "lambda" {
-  #external module
   source = "./modules/lambda"
 
   lambda_functions = local.lambda_functions

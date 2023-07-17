@@ -7,7 +7,7 @@ resource "aws_vpc" "main" {
   instance_tenancy = "default"
 
   tags = {
-    Name = "main"
+    Name = "cloud-ninja-vpc"
   }
 }
 
@@ -66,10 +66,10 @@ resource "aws_route_table" "public" {
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.main.id
 
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.main.id
-  }
+  # route {
+  #   cidr_block = "0.0.0.0/0"
+  #   gateway_id = aws_internet_gateway.main.id
+  # }
 
   tags = {
     Name = "private_route_table"
