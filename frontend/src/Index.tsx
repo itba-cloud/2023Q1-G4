@@ -2,7 +2,7 @@
 import {Route} from "@tanstack/router";
 import {rootRoute} from "@/App.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {useState} from "react";
+import {Suspense, useState} from "react";
 
 export const indexRoute = new Route({
     getParentRoute: () => rootRoute,
@@ -11,16 +11,16 @@ export const indexRoute = new Route({
 })
 
 function Index() {
-    const [count, setCount] = useState(0)
+    const [count, setCount] = useState(0);
 
     return (
-        <>
+        <Suspense>
             <h1 className="text-3xl font-bold underline">
                 Hello world!
             </h1>
             <Button onClick={() => setCount((count) => count + 1)}>
                 count is {count}
             </Button>
-        </>
+        </Suspense>
     )
 }

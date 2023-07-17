@@ -4,10 +4,12 @@ import {rootRoute} from './App.tsx'
 import {Router, RouterProvider} from "@tanstack/router";
 import {indexRoute} from "@/Index.tsx";
 import {aboutRoute} from "@/About.tsx";
+import {dailiesRoute, dailyRoute} from "@/Daily.tsx";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 
 // Create the route tree using your routes
 const routeTree = rootRoute.addChildren(
-    [indexRoute, aboutRoute]
+    [indexRoute, aboutRoute, dailiesRoute.addChildren([dailyRoute])]
 )
 
 // Create the router using your route tree
@@ -20,8 +22,13 @@ declare module '@tanstack/router' {
     }
 }
 
+// Create a client
+const queryClient = new QueryClient()
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
-        <RouterProvider router={router}/>
+        <QueryClientProvider client={queryClient}>
+            <RouterProvider router={router}/>
+        </QueryClientProvider>
     </React.StrictMode>,
 )
