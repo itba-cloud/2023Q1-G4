@@ -8,9 +8,8 @@ export const rootRoute = new RootRoute({
 })
 
 function App() {
-
     return (
-        <div className="flex min-h-screen flex-col items-center space-y-3 overflow-hidden antialiased">
+        <div className="flex min-h-screen flex-col space-y-3 overflow-hidden antialiased dark:bg-black">
             <Navbar/>
             <Outlet/>
         </div>
