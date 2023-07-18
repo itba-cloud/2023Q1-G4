@@ -9,7 +9,6 @@ module "api_gw" {
   lambda_functions = module.lambda.lambda_functions
 }
 
-
 resource "aws_cloudfront_origin_access_identity" "this" {
   comment = "OAI for the static site"
 }
@@ -18,7 +17,6 @@ module "acm" {
   source      = "./modules/acm"
   base_domain = var.base_domain
 }
-
 
 module "route53" {
   source      = "./modules/route53"
@@ -44,7 +42,6 @@ module "web_site" {
   bucket_access = [aws_cloudfront_origin_access_identity.this.iam_arn]
 }
 
-
 resource "aws_s3_object" "data" {
   bucket       = module.web_site.bucket_id
   key          = "index.html"
@@ -67,7 +64,7 @@ module "lambda" {
   lambda_functions = local.lambda_functions
 
   vpc_subnet_ids         = module.vpc.subnet_ids_by_tier["1"]
-  vpc_security_group_ids = [module.vpc.default_security_group_id]
+  vpc_security_group_ids = [module.vpc.lambda_security_group_id]
   attach_network_policy  = true
   create_role            = false // Esto esta así ya que de no estar no funciona por permisos del Lab
   lambda_role            = local.iam_role_arn
