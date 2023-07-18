@@ -6,7 +6,12 @@ module "external_lambda" {
   description   = var.lambda_functions[count.index].description
   handler       = var.lambda_functions[count.index].handler
   runtime       = var.lambda_functions[count.index].runtime
-  source_path   = var.lambda_functions[count.index].source_path
+  timeout       = 30
+  memory_size   = 512
+
+  //TODO: check
+  create_package            = false
+  local_existing_package    = var.lambda_functions[count.index].source_path
 
   vpc_subnet_ids         = var.vpc_subnet_ids
   vpc_security_group_ids = var.vpc_security_group_ids
