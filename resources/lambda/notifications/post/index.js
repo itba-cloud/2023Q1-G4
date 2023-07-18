@@ -1,4 +1,4 @@
-exports.lambdaHandler = async (event, context) => {
+exports.handler = async (event, context) => {
     const { Client } = require('pg');
     const AWS = require('aws-sdk');
     const body = JSON.parse(event.body);
@@ -38,6 +38,6 @@ exports.lambdaHandler = async (event, context) => {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'POST'
         },
-      body: json.dump(res)
+      body: JSON.stringify(res)
     };
   };

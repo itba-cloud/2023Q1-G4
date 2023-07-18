@@ -1,5 +1,3 @@
-//import {LocalDate} from "@js-joda/core";
-
 export interface Daily {
     _date: Date;
     email: string;

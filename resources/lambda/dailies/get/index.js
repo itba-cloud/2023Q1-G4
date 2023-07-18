@@ -6,7 +6,7 @@ exports.handler = async (event) => {
 	let values = {};
 
 	if (event.queryStringParameters) {
-		const queries = JSON.parse(event.queryStringParameters);
+		const queries = event.queryStringParameters;
 
 		if (queries.role_id) {
 			text += `AND email LIKE :email `;

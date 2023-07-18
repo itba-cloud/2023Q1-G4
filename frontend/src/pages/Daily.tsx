@@ -9,7 +9,7 @@ import {useMutation} from "@tanstack/react-query";
 import {dailiesApi} from "@/api/dailiesApi.ts";
 import {useAuthStore} from "@/hooks/useAuthStore.ts";
 import {toast} from "@/components/ui/use-toast.ts";
-import {api} from "@/api/api.ts";
+import {useAuthHeaders} from "@/hooks/useAuthHeaders.ts";
 
 interface dailyFormInput {
     yesterday: string
@@ -21,11 +21,9 @@ const Dailies = () => {
     const {register, handleSubmit, formState: {errors}} = useForm<dailyFormInput>();
     const userEmail = useAuthStore((state) => state.email);
     const teamId = useAuthStore((state) => state.teamId);
-    const token = useAuthStore((state) => state.token);
+    useAuthHeaders();
 
     const {mutate} = useMutation(['daily'], async (data: dailyFormInput) => {
-            if (token)
-                api.defaults.headers.common['Authorization'] = `${token}`
             await dailiesApi.createDaily({
                 yesterday: data.yesterday,
                 today: data.today,
