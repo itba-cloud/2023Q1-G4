@@ -49,7 +49,7 @@ const Login = () => {
 
     return <div className={cn('m-2')}>
         <h1 className={cn("text-2xl font-bold")}>Login</h1>
-        <form className={"space-y-1.5"} onSubmit={handleSubmit(handleFormSubmit)}>
+        <form className={"space-y-4 m-8"} onSubmit={handleSubmit(handleFormSubmit)}>
             <div className={cn("flex flex-col space-y-1.5")}>
                 <label htmlFor="email">Email</label>
                 <Input id="email" {...register("email", {required: true})} className={cn("border-2")}/>
