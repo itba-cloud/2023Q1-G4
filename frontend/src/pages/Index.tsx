@@ -1,12 +1,9 @@
 // Create an index route
-import {Route} from "@tanstack/router";
+import {Route, useNavigate} from "@tanstack/router";
 import {rootRoute} from "@/App.tsx";
-import {Suspense} from "react";
 import {cn} from "@/lib/utils.ts";
-import {DisplayDailies} from "@/components/dashboard/DisplayDailies.tsx";
-import {useQuery} from "@tanstack/react-query";
-import {teamsApi} from "@/api/teamsApi.ts";
-import {Spinner} from "@/components/Spinner.tsx";
+import {Button} from "@/components/ui/button.tsx";
+import {toast} from "@/components/ui/use-toast.ts";
 
 export const indexRoute = new Route({
     getParentRoute: () => rootRoute,
@@ -67,27 +64,33 @@ const DUMMY_DAILIES: Daily[] = [
 ]*/
 
 function Index() {
-    const {data: teamsData} = useQuery(['users'], async () => {
-            return await teamsApi.getTeams()
-        }
-    )
+    const navigate = useNavigate({from: '/'})
+
+    function handleRedirect(to: string) {
+        navigate({
+            to: to === 'dashboard' ? '/dashboard' : '/dailies',
+        }).catch((e: Error) => {
+            toast({
+                title: "Something went wrong",
+                description: e.message,
+            })
+        })
+    }
 
     return (
-        <Suspense fallback={<Spinner/>}>
-            {
-                teamsData?.map((team) => {
-                    return (
-                        <div className={cn("p-4")} key={team.id}>
-                            <h1 className={cn("font-bold text-left text-2xl")}>
-                                {
-                                    team.name
-                                }
-                            </h1>
-                            <DisplayDailies teamId={team.id}/>
-                        </div>
-                    )
-                })
-            }
-        </Suspense>
+        <div className={cn("grid md:grid-cols-2 grow min-h-screen container")}>
+            <div className="flex flex-col space-y-8 justify-center items-center">
+                <h1 className={cn("text-4xl font-bold text-left")}>
+                    Are you a PM?
+                </h1>
+                <Button className={"w-fit"} onClick={() => handleRedirect('dashboard')}>Dashboard</Button>
+            </div>
+            <div className="flex flex-col space-y-8 justify-center items-center">
+                <h1 className={cn("text-4xl font-bold text-left")}>
+                    Are you a developer?
+                </h1>
+                <Button className={"w-fit"} onClick={() => handleRedirect('')}>Dailies</Button>
+            </div>
+        </div>
     )
 }
