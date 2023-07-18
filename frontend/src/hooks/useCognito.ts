@@ -1,5 +1,7 @@
 import {AuthenticationDetails, CognitoUserPool, CognitoUser, CognitoUserAttribute} from 'amazon-cognito-identity-js';
 import {useState} from 'react';
+import {useAuthStore} from "@/hooks/useAuthStore.ts";
+import {shallow} from "zustand/shallow";
 
 const poolData = {
     UserPoolId: import.meta.env.VITE_USER_POOL as string, // Your user pool id here
@@ -8,10 +10,10 @@ const poolData = {
 
 const userPool = new CognitoUserPool(poolData);
 
-export function useLogin(): [(credentials: { email: string, password: string }) => void, string, string, Error | undefined] {
+export function useLogin(): [(credentials: { email: string, password: string }) => void, string, Error | undefined] {
     const [result, setResult] = useState<string>('');
-    const [loggedUser, setLoggedUser] = useState<string>('');
     const [error, setError] = useState<Error>();
+    const {setEmail, setTeamId} = useAuthStore((state) => ({setEmail: state.setEmail, setTeamId: state.setTeamId}), shallow);
 
     function login({email, password}: { email: string, password: string }) {
         const cognitoUser = new CognitoUser({
@@ -28,7 +30,8 @@ export function useLogin(): [(credentials: { email: string, password: string }) 
             onSuccess: function (result) {
                 const accessToken = result.getIdToken().getJwtToken();
                 setResult(accessToken);
-                setLoggedUser(result.getIdToken().payload as unknown as string);
+                setEmail(result.getIdToken().payload.email as unknown as string);
+                setTeamId(parseInt(result.getIdToken().payload['custom:team_id'] as unknown as string));
             },
 
             onFailure: function (err: Error) {
@@ -48,7 +51,7 @@ export function useLogin(): [(credentials: { email: string, password: string }) 
         });
     }
 
-    return [login, result, loggedUser, error];
+    return [login, result, error];
 }
 
 type registerCredentials = { email: string, password: string, name: string, roleId: number, teamId: number };

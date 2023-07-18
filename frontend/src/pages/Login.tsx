@@ -19,21 +19,20 @@ interface loginFormInput {
 const Login = () => {
     const {register, handleSubmit, formState: {errors}} = useForm<loginFormInput>();
 
-    const [login, token, loggedUser, error] = useLogin();
-    const {setAccessToken, setLoggedUser} = useAuthStore(state => ({setAccessToken: state.setAccessToken, setLoggedUser: state.setLoggedUser}), shallow);
+    const [login, token, error] = useLogin();
+    const {setAccessToken} = useAuthStore(state => ({setAccessToken: state.setAccessToken}), shallow);
     const navigate = useNavigate({from: '/login'});
 
     useEffect(() => {
-        if (!token || !loggedUser) return;
+        if (!token) return;
         setAccessToken(token);
-        setLoggedUser(loggedUser);
         navigate({to: '/'}).catch((e: Error) => {
             toast({
                 title: "Something went wrong",
                 description: e.message,
             });
         });
-    }, [token, loggedUser, setAccessToken, setLoggedUser, navigate])
+    }, [token, setAccessToken, navigate])
 
     useEffect(() => {
         if (!error) return;

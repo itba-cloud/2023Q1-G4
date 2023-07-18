@@ -22,7 +22,7 @@ export const DisplayDailies: FC<DisplayDailiesProps> = ({teamId}) => {
                     <div className={cn("flex flex-wrap space-x-1.5 items-baseline")}>
                         <h2 className="font-bold text-left">
                             {
-                                daily.user.name
+                                daily.email
                             }
                         </h2>
                         <h3 className="text-left text-xs">

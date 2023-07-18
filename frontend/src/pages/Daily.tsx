@@ -5,6 +5,11 @@ import {useForm} from "react-hook-form";
 import {Button} from "@/components/ui/button.tsx";
 import {Textarea} from "@/components/ui/textarea.tsx";
 import {ErrorField} from "@/components/forms/ErrorField.tsx";
+import {useMutation} from "@tanstack/react-query";
+import {dailiesApi} from "@/api/dailiesApi.ts";
+import {useAuthStore} from "@/hooks/useAuthStore.ts";
+import {toast} from "@/components/ui/use-toast.ts";
+import {api} from "@/api/api.ts";
 
 interface dailyFormInput {
     yesterday: string
@@ -14,9 +19,41 @@ interface dailyFormInput {
 
 const Dailies = () => {
     const {register, handleSubmit, formState: {errors}} = useForm<dailyFormInput>();
+    const userEmail = useAuthStore((state) => state.email);
+    const teamId = useAuthStore((state) => state.teamId);
+    const token = useAuthStore((state) => state.token);
+
+    const {mutate} = useMutation(['daily'], async (data: dailyFormInput) => {
+            if (token)
+                api.defaults.headers.common['Authorization'] = `${token}`
+            await dailiesApi.createDaily({
+                yesterday: data.yesterday,
+                today: data.today,
+                blocker: data.blockers,
+                email: userEmail || "",
+                _date: new Date(),
+                team_id: (teamId || 0) + 1
+            })
+        }, {
+            onError: (error: Error) => {
+                toast({
+                    title: "Oops! Something went wrong.",
+                    description: error.message,
+                    variant: "destructive"
+                })
+            },
+            onSuccess: () => {
+                toast({
+                    title: "Success!",
+                    description: "Your daily has been submitted.",
+                })
+            }
+        }
+    );
 
     const handleFormSubmit = (data: dailyFormInput) => {
         console.log(data)
+        mutate(data)
     }
 
     return <div className="m-3 space-y-1.5">

@@ -23,7 +23,7 @@ exports.handler = async (event) => {
 	
 	await client.connect();
 	const checkResult = await client.query(checkQuery);
-	if (checkResult.rowCount == 0) {
+	if (checkResult.rowCount > 0) {
 		await client.end();
 		return {
 			statusCode: 400,
@@ -34,7 +34,7 @@ exports.handler = async (event) => {
 			body: JSON.stringify({ message: 'Daily already exists' })
 		};
 	}
-	
+
 	const result = await client.query(insertQuery);
 	const resultString = JSON.stringify(result.rows[0]);
 	await client.end();

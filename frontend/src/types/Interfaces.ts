@@ -1,26 +1,21 @@
-import {LocalDate} from "@js-joda/core";
-
-export interface User {
-    id: number;
-    email: string;
-    name: string;
-    role: string;
-    team: string;
-}
+//import {LocalDate} from "@js-joda/core";
 
 export interface Daily {
-    id: number;
-    date: LocalDate;
-    user: User;
+    _date: Date;
+    email: string;
     yesterday: string;
     today: string;
-    blockers: string;
+    blocker: string;
+    team_id: number;
+}
+
+export interface DailyToDisplay extends Daily {
+    id: number;
 }
 
 export interface Team {
     id: number;
     name: string;
-    members: User[];
 }
 
 export enum Role {

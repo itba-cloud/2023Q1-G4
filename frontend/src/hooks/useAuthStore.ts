@@ -5,8 +5,10 @@ import {api} from "@/api/api.ts";
 interface AuthStore {
     token: string | null;
     setAccessToken: (token: string) => void;
-    loggedUser: string | null;
-    setLoggedUser: (loggedUser: string) => void;
+    email: string | null;
+    setEmail: (loggedUser: string) => void;
+    teamId: number | null;
+    setTeamId: (teamId: number) => void;
 }
 
 export const useAuthStore = create<AuthStore>()(
@@ -16,8 +18,10 @@ export const useAuthStore = create<AuthStore>()(
                 set({token});
                 api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             },
-            loggedUser: localStorage.getItem('loggedUser') || null,
-            setLoggedUser: (loggedUser) => set({loggedUser}),
+            email: null,
+            setEmail: (email) => set({email}),
+            teamId: null,
+            setTeamId: (teamId) => set({teamId}),
         }), {
             name: 'auth-storage',
         }
