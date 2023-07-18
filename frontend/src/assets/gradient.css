@@ -1,0 +1,30 @@
+.vaporwave-background {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 400px;
+    background: black;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  
+  .vaporwave-gradient {
+    background: linear-gradient(45deg, #ad64ef, #4c00ff, #0f8da7, #ff00e2, #ad64ef);
+    background-size: 400% 400%;
+    animation: vaporwave-animation 10s ease infinite;
+  }
+  
+  @keyframes vaporwave-animation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  

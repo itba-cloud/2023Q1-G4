@@ -7,7 +7,14 @@ export const Navbar = () => {
         <>
             <div className={cn('space-x-1.5 flex justify-between p-3')}>
                 <Link className={"text-xl"} to="/">🥷</Link>
+
+                <div className="flex justify-center">
+                <p>🌞  .</p>
                 <DarkModeToggle/>
+                <p>.  🌚</p>
+                </div>
+
+                
             </div>
             <hr/>
         </>
