@@ -8,10 +8,12 @@ import {dailiesRoute, dailyRoute} from "@/pages/Daily.tsx";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {loginRoute} from "@/pages/Login.tsx";
 import {Toaster} from "@/components/ui/toaster.tsx";
+import {registerRoute} from "@/pages/Register.tsx";
+import {confirmRegistrationRoute} from "@/pages/ConfirmRegistration.tsx";
 
 // Create the route tree using your routes
 const routeTree = rootRoute.addChildren(
-    [indexRoute, aboutRoute, dailiesRoute.addChildren([dailyRoute]), loginRoute]
+    [indexRoute, aboutRoute, dailiesRoute.addChildren([dailyRoute]), loginRoute, registerRoute, confirmRegistrationRoute]
 )
 
 // Create the router using your route tree

@@ -1,4 +1,6 @@
 import {create} from "zustand";
+import {persist} from "zustand/middleware";
+import {api} from "@/api/api.ts";
 
 interface AuthStore {
     token: string | null;
@@ -7,9 +9,17 @@ interface AuthStore {
     setLoggedUser: (loggedUser: string) => void;
 }
 
-export const useAuthStore = create<AuthStore>()((set) => ({
-    token: localStorage.getItem('token') || null,
-    setAccessToken: (token) => set({token}),
-    loggedUser: localStorage.getItem('loggedUser') || null,
-    setLoggedUser: (loggedUser) => set({loggedUser}),
-}));
+export const useAuthStore = create<AuthStore>()(
+    persist((set) => ({
+            token: localStorage.getItem('token') || null,
+            setAccessToken: (token) => {
+                set({token});
+                api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            },
+            loggedUser: localStorage.getItem('loggedUser') || null,
+            setLoggedUser: (loggedUser) => set({loggedUser}),
+        }), {
+            name: 'auth-storage',
+        }
+    )
+);

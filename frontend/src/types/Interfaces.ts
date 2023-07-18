@@ -22,3 +22,8 @@ export interface Team {
     name: string;
     members: User[];
 }
+
+export enum Role {
+    PM = 'PM',
+    DEV = 'DEV',
+}

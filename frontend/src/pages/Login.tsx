@@ -1,6 +1,6 @@
 import {Route, useNavigate} from "@tanstack/router";
 import {rootRoute} from "@/App.tsx";
-import {useLogin} from "@/hooks/useLogin.ts";
+import {useLogin} from "@/hooks/useCognito.ts";
 import {useForm} from "react-hook-form";
 import {useAuthStore} from "@/hooks/useAuthStore.ts";
 import {shallow} from "zustand/shallow";
@@ -27,12 +27,18 @@ const Login = () => {
         if (!token || !loggedUser) return;
         setAccessToken(token);
         setLoggedUser(loggedUser);
+        navigate({to: '/'}).catch((e: Error) => {
+            toast({
+                title: "Something went wrong",
+                description: e.message,
+            });
+        });
     }, [token, loggedUser, setAccessToken, setLoggedUser, navigate])
 
     useEffect(() => {
         if (!error) return;
         toast({
-            title: "Error",
+            title: "Error logging in",
             description: error.message,
             variant: "destructive",
         });
@@ -43,6 +49,7 @@ const Login = () => {
     }
 
     return <div className={cn('m-2')}>
+        <h1 className={cn("text-2xl font-bold")}>Login</h1>
         <form className={"space-y-1.5"} onSubmit={handleSubmit(handleFormSubmit)}>
             <div className={cn("flex flex-col space-y-1.5")}>
                 <label htmlFor="email">Email</label>
@@ -56,6 +63,7 @@ const Login = () => {
             </div>
             <Button type="submit" className={cn("p-2 rounded")}>Sign In</Button>
         </form>
+
     </div>
 }
 
