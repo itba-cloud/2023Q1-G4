@@ -13,10 +13,11 @@
 
 | Nombre | Legajo | Participación |
 | ------ | ------ | ------------- |
-| [Ana Cruz](https://github.com/anitacruz) | 60476 | 25% |
-| [Matías Lombardi](https://github.com/matiaslombardi) | 60527 | 25% |
 | [Gian Luca Pecile](https://github.com/glpecile) | 59235 | 25% |
 | [Salustiano Zavalía](https://github.com/szavalia) | 60312 | 25% |
+| [Ana Cruz](https://github.com/anitacruz) | 60476 | 25% |
+| [Matías Lombardi](https://github.com/matiaslombardi) | 60527 | 25% |
+
 
 ## Descripción
 
