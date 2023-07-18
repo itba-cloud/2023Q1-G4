@@ -1,9 +1,10 @@
 // Create an index route
-import {Route, useNavigate} from "@tanstack/router";
-import {rootRoute} from "@/App.tsx";
-import {cn} from "@/lib/utils.ts";
-import {Button} from "@/components/ui/button.tsx";
-import {toast} from "@/components/ui/use-toast.ts";
+import { Route, useNavigate } from "@tanstack/router";
+import { rootRoute } from "@/App.tsx";
+import { cn } from "@/lib/utils.ts";
+import { Button } from "@/components/ui/button.tsx";
+import { toast } from "@/components/ui/use-toast.ts";
+import "../assets/gradient.css"
 
 export const indexRoute = new Route({
     getParentRoute: () => rootRoute,
@@ -64,7 +65,7 @@ const DUMMY_DAILIES: Daily[] = [
 ]*/
 
 function Index() {
-    const navigate = useNavigate({from: '/'})
+    const navigate = useNavigate({ from: '/' })
 
     function handleRedirect(to: string) {
         navigate({
@@ -78,19 +79,23 @@ function Index() {
     }
 
     return (
-        <div className={cn("grid md:grid-cols-2 grow min-h-screen container")}>
-            <div className="flex flex-col space-y-8 justify-center items-center">
-                <h1 className={cn("text-4xl font-bold text-left")}>
-                    Are you a PM?
-                </h1>
-                <Button className={"w-fit"} onClick={() => handleRedirect('dashboard')}>Dashboard</Button>
-            </div>
-            <div className="flex flex-col space-y-8 justify-center items-center">
-                <h1 className={cn("text-4xl font-bold text-left")}>
-                    Are you a developer?
-                </h1>
-                <Button className={"w-fit"} onClick={() => handleRedirect('')}>Dailies</Button>
-            </div>
+        <div className="vaporwave-gradient min-h-screen flex items-center justify-center">
+      <div className="container">
+        <div className="grid md:grid-cols-2 gap-6 min-h-screen items-center ">
+          <div className={cn("shadow-lg p-6 space-y-4 border-2 rounded-2xl dark:bg-black bg-white flex flex-col justify-center items-center h-96")}>
+            <h1 className="text-4xl font-bold text-left">
+              Are you a PM?
+            </h1>
+            <Button className="w-fit" onClick={() => handleRedirect('dashboard')}>Dashboard</Button>
+          </div>
+          <div className={cn("shadow-lg p-6 space-y-4 border-2 rounded-2xl dark:bg-black bg-white flex flex-col justify-center items-center h-96")}>
+            <h1 className="text-4xl font-bold text-left">
+              Are you a developer?
+            </h1>
+            <Button className="w-fit" onClick={() => handleRedirect('')}>Dailies</Button>
+          </div>
         </div>
-    )
+      </div>
+    </div>
+    );
 }
