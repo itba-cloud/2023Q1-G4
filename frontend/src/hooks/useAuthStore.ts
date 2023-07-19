@@ -13,10 +13,10 @@ interface AuthStore {
 
 export const useAuthStore = create<AuthStore>()(
     persist((set) => ({
-            token: localStorage.getItem('token') || null,
+            token: localStorage.getItem('token') ?? null,
             setAccessToken: (token) => {
                 set({token});
-                api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                api.defaults.headers.common['Authorization'] = `${token}`;
             },
             email: null,
             setEmail: (email) => set({email}),

@@ -10,6 +10,8 @@ import {Button} from "@/components/ui/button.tsx";
 import {ErrorField} from "@/components/forms/ErrorField.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {toast} from "@/components/ui/use-toast.ts";
+import { subscribeUserToTeam } from "@/api/subscriptionsApi";
+import { useAuthHeaders } from "@/hooks/useAuthHeaders";
 
 interface loginFormInput {
     email: string
@@ -19,20 +21,33 @@ interface loginFormInput {
 const Login = () => {
     const {register, handleSubmit, formState: {errors}} = useForm<loginFormInput>();
 
-    const [login, token, error] = useLogin();
+    const [login, result, error] = useLogin();
     const {setAccessToken} = useAuthStore(state => ({setAccessToken: state.setAccessToken}), shallow);
     const navigate = useNavigate({from: '/login'});
 
     useEffect(() => {
-        if (!token) return;
-        setAccessToken(token);
-        navigate({to: '/'}).catch((e: Error) => {
-            toast({
-                title: "Something went wrong",
-                description: e.message,
+        async function validateLogin() {
+            if (!result) return;
+            
+            console.log(result);
+            try {
+                await subscribeUserToTeam(result.userEmail, result.teamId + 1);
+            } catch (e) {
+                toast({
+                    title: "Error subscribing to team",
+                    description: e.message,
+                });
+            }
+            navigate({to: '/'}).catch((e: Error) => {
+                toast({
+                    title: "Something went wrong",
+                    description: e.message,
+                });
             });
-        });
-    }, [token, setAccessToken, navigate])
+        }
+
+        validateLogin();
+    }, [result, setAccessToken, navigate])
 
     useEffect(() => {
         if (!error) return;

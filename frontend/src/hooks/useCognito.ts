@@ -10,10 +10,16 @@ const poolData = {
 
 const userPool = new CognitoUserPool(poolData);
 
-export function useLogin(): [(credentials: { email: string, password: string }) => void, string, Error | undefined] {
-    const [result, setResult] = useState<string>('');
+interface LoginResult {
+    accessToken: string;
+    userEmail: string;
+    teamId: number;
+}
+
+export function useLogin(): [(credentials: { email: string, password: string }) => void, LoginResult | undefined, Error | undefined] {
+    const [result, setResult] = useState<LoginResult>();
     const [error, setError] = useState<Error>();
-    const {setEmail, setTeamId} = useAuthStore((state) => ({setEmail: state.setEmail, setTeamId: state.setTeamId}), shallow);
+    const {setEmail, setTeamId, setAccessToken} = useAuthStore((state) => ({setEmail: state.setEmail, setTeamId: state.setTeamId, setAccessToken: state.setAccessToken}), shallow);
 
     function login({email, password}: { email: string, password: string }) {
         const cognitoUser = new CognitoUser({
@@ -29,9 +35,14 @@ export function useLogin(): [(credentials: { email: string, password: string }) 
         cognitoUser.authenticateUser(authenticationDetails, {
             onSuccess: function (result) {
                 const accessToken = result.getIdToken().getJwtToken();
-                setResult(accessToken);
-                setEmail(result.getIdToken().payload.email as unknown as string);
-                setTeamId(parseInt(result.getIdToken().payload['custom:team_id'] as unknown as string));
+                const userEmail = result.getIdToken().payload.email as unknown as string;
+                const teamId = parseInt(result.getIdToken().payload['custom:team_id'] as unknown as string);
+
+                setEmail(userEmail);
+                setTeamId(teamId);
+                setAccessToken(accessToken);
+
+                setResult({accessToken, userEmail, teamId});
             },
 
             onFailure: function (err: Error) {
@@ -40,9 +51,9 @@ export function useLogin(): [(credentials: { email: string, password: string }) 
 
             newPasswordRequired: function (_, requiredAttributes: string[]) {
                 const attributes = [];
-                for (let i = 0; i < requiredAttributes.length; i++) {
+                for (const element of requiredAttributes) {
                     attributes.push({
-                        Name: requiredAttributes[i],
+                        Name: element,
                         Value: null
                     });
                 }
