@@ -5,18 +5,15 @@ import {DarkModeToggle} from "@/components/theme/DarkModeToggle.tsx";
 export const Navbar = () => {
     return (
         <>
-            <div className={cn('space-x-1.5 flex justify-between p-3')}>
-                <Link className={"text-xl"} to="/">🥷</Link>
+            <div className={cn('items-baseline flex justify-between p-3 border-b-2')}>
+                <Link className={"text-3xl"} to="/">🥷</Link>
 
-                <div className="flex justify-center">
-                <p>🌞  .</p>
-                <DarkModeToggle/>
-                <p>.  🌚</p>
+                <div className="flex justify-center space-x-1.5">
+                    <p>🌞</p>
+                    <DarkModeToggle/>
+                    <p>🌚</p>
                 </div>
-
-                
             </div>
-            <hr/>
         </>
     );
 };

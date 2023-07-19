@@ -20,3 +20,8 @@ export enum Role {
     PM = 'PM',
     DEV = 'DEV',
 }
+
+export interface BlockerNotification {
+    subject: string;
+    message: string;
+}
