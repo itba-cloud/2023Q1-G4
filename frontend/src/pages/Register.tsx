@@ -69,7 +69,7 @@ const Register = () => {
                     }
                     <label htmlFor="teamId">Team Id</label>
                     <Input min={0} max={1} type={"number"} id="teamId" {...register("teamId", {required: true})} className={cn("border-2")}/>
-                    <p className={"text-xs"}>0: MiguelOHara, 1: Scaloneta (You can only choose one)</p>
+                    <p className={"text-xs"}>0: Scaloneta, 1: MiguelOHara (You can only choose one)</p>
                     {errors.teamId && <ErrorField error={"This is a required field"}/>}
                 </div>
                 <div className={cn("flex flex-col space-y-1.5")}>
