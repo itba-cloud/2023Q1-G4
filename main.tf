@@ -42,13 +42,6 @@ module "web_site" {
   bucket_access = [aws_cloudfront_origin_access_identity.this.iam_arn]
 }
 
-resource "aws_s3_object" "data" {
-  bucket       = module.web_site.bucket_id
-  key          = "index.html"
-  source       = "resources/index.html"
-  content_type = "text/html"
-}
-
 module "vpc" {
   source             = "./modules/vpc"
   availability_zones = ["${local.current_region}a", "${local.current_region}b"]
