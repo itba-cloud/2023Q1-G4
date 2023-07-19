@@ -46,9 +46,9 @@ const Register = () => {
     }
 
     return (
-        <div className={cn("m-2")}>
+        <div className={cn("m-2 grow container")}>
             <h1 className={cn("text-2xl font-bold")}>Register</h1>
-            <form className={"space-y-1.5"} onSubmit={handleSubmit(handleFormSubmit)}>
+            <form className={"space-y-4 m-8"} onSubmit={handleSubmit(handleFormSubmit)}>
                 <div className={cn("flex flex-col space-y-1.5")}>
                     <label htmlFor="name">Name</label>
                     <Input id="name" {...register("name", {required: true})} className={cn("border-2")}/>
@@ -66,12 +66,12 @@ const Register = () => {
                 </div>
                 <div className={cn("flex flex-col space-y-1.5")}>
                     <label htmlFor="teamId">Team Id</label>
-                    <Input type={"number"} id="teamId" {...register("teamId", {required: true})} className={cn("border-2")}/>
+                    <Input min={0} max={1} type={"number"} id="teamId" {...register("teamId", {required: true})} className={cn("border-2")}/>
                     {errors.teamId && <ErrorField error={"This is a required field"}/>}
                 </div>
                 <div className={cn("flex flex-col space-y-1.5")}>
                     <label htmlFor="roleId">Role Id</label>
-                    <Input type={"number"} id="roleId" {...register("roleId", {required: true})} className={cn("border-2")}/>
+                    <Input min={0} max={1} type={"number"} id="roleId" {...register("roleId", {required: true})} className={cn("border-2")}/>
                     {errors.roleId && <ErrorField error={"This is a required field"}/>}
                 </div>
                 <Button type="submit" className={cn("rounded-md p-2")}>Register</Button>

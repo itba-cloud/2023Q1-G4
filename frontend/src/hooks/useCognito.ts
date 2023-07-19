@@ -2,6 +2,7 @@ import {AuthenticationDetails, CognitoUserPool, CognitoUser, CognitoUserAttribut
 import {useState} from 'react';
 import {useAuthStore} from "@/hooks/useAuthStore.ts";
 import {shallow} from "zustand/shallow";
+import {Role} from "@/types/Interfaces.ts";
 
 const poolData = {
     UserPoolId: import.meta.env.VITE_USER_POOL as string, // Your user pool id here
@@ -19,7 +20,12 @@ interface LoginResult {
 export function useLogin(): [(credentials: { email: string, password: string }) => void, LoginResult | undefined, Error | undefined] {
     const [result, setResult] = useState<LoginResult>();
     const [error, setError] = useState<Error>();
-    const {setEmail, setTeamId, setAccessToken} = useAuthStore((state) => ({setEmail: state.setEmail, setTeamId: state.setTeamId, setAccessToken: state.setAccessToken}), shallow);
+    const {setEmail, setTeamId, setAccessToken, setRoleId} = useAuthStore((state) => ({
+        setEmail: state.setEmail,
+        setTeamId: state.setTeamId,
+        setAccessToken: state.setAccessToken,
+        setRoleId: state.setRoleId
+    }), shallow);
 
     function login({email, password}: { email: string, password: string }) {
         const cognitoUser = new CognitoUser({
@@ -37,10 +43,12 @@ export function useLogin(): [(credentials: { email: string, password: string }) 
                 const accessToken = result.getIdToken().getJwtToken();
                 const userEmail = result.getIdToken().payload.email as unknown as string;
                 const teamId = parseInt(result.getIdToken().payload['custom:team_id'] as unknown as string);
+                const roleId = parseInt(result.getIdToken().payload['custom:role_id'] as unknown as string) ? Role.DEV : Role.PM;
 
                 setEmail(userEmail);
                 setTeamId(teamId);
                 setAccessToken(accessToken);
+                setRoleId(roleId);
 
                 setResult({accessToken, userEmail, teamId});
             },

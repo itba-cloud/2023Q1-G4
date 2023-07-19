@@ -27,8 +27,8 @@ function Index() {
     }
 
     return (
-        <div className="vaporwave-gradient min-h-screen flex items-center justify-center">
-            <div className="container grid md:grid-cols-2 gap-8 min-h-screen items-center">
+        <div className="vaporwave-gradient flex grow items-center justify-center">
+            <div className="container grid md:grid-cols-2 md:gap-8 min-h-screen items-center">
                 <div className={cn("shadow-lg p-6 space-y-4 border-2 rounded-3xl dark:bg-black bg-white flex flex-col justify-center items-center h-96")}>
                     <h1 className="text-4xl font-bold text-center">
                         Are you a PM?

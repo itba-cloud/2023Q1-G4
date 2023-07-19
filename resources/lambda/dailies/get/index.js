@@ -1,6 +1,36 @@
+const roles = {
+	pm: 0,
+	dev: 1 
+}
+
 exports.handler = async (event) => {
 	const { Client } = require('pg');
 	// https://stackoverflow.com/questions/32610213/node-postgres-named-parameters-query-nodejs
+
+	// CHECK
+	if (!event.queryStringParameters || !event.queryStringParameters.role_id || !event.queryStringParameters.team_id) {
+		return {
+			statusCode: 400,
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Methods': 'POST'
+			},
+			body: JSON.stringify({ message: 'You need to send role and team' })
+		};
+	}
+
+	if (roles.pm !== event.queryStringParameters.role_id) {
+		return {
+			statusCode: 401,
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Methods': 'POST'
+			},
+			body: JSON.stringify({ message: 'You are not a DEV' })
+		};
+	}
+	//FINALIZE CHECK
+
 	const sql = require('yesql').pg;
 	let text = `SELECT * FROM dailies WHERE true `;
 	let values = {};

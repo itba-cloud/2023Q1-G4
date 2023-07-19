@@ -1,6 +1,24 @@
+const roles = {
+	pm: 0,
+	dev: 1 
+}
+
 exports.handler = async (event) => {
 	const { Client } = require('pg');
 	const body = JSON.parse(event.body);
+
+	// DEV CHECK
+	if (roles.dev !== body.role_id) {
+		return {
+			statusCode: 401,
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Methods': 'POST'
+			},
+			body: JSON.stringify({ message: 'You are not a DEV' })
+		};
+	}
+	// DEV FINALIZE CHECK
 	
 	const client = new Client({
 		user: 'postgres',

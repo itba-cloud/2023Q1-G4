@@ -1,5 +1,5 @@
 import {rootRoute} from "@/App.tsx";
-import {Route} from "@tanstack/router";
+import {Navigate, Route, useNavigate} from "@tanstack/router";
 import {cn} from "@/lib/utils.ts";
 import {useForm} from "react-hook-form";
 import {Button} from "@/components/ui/button.tsx";
@@ -10,6 +10,7 @@ import {dailiesApi} from "@/api/dailiesApi.ts";
 import {useAuthStore} from "@/hooks/useAuthStore.ts";
 import {toast} from "@/components/ui/use-toast.ts";
 import {useAuthHeaders} from "@/hooks/useAuthHeaders.ts";
+import {Role} from "@/types/Interfaces.ts";
 
 interface dailyFormInput {
     yesterday: string
@@ -18,11 +19,11 @@ interface dailyFormInput {
 }
 
 const Dailies = () => {
+    const {roleId} = useAuthStore((state) => ({roleId: state.roleId}));
     const {register, handleSubmit, formState: {errors}} = useForm<dailyFormInput>();
     const userEmail = useAuthStore((state) => state.email);
     const teamId = useAuthStore((state) => state.teamId);
     useAuthHeaders();
-
     const {mutate} = useMutation(['daily'], async (data: dailyFormInput) => {
             await dailiesApi.createDaily({
                 yesterday: data.yesterday,
@@ -49,12 +50,16 @@ const Dailies = () => {
         }
     );
 
+    if (roleId !== Role.DEV) {
+        return <Navigate to={"/login"}/>
+    }
+
+
     const handleFormSubmit = (data: dailyFormInput) => {
-        console.log(data)
         mutate(data)
     }
 
-    return <div className="m-3 space-y-1.5">
+    return <div className="m-3 space-y-1.5 grow">
         <h1 className={cn("text-2xl font-bold")}>Fill in the details</h1>
         <form className={"space-y-1.5"} onSubmit={handleSubmit(handleFormSubmit)}>
             <div className={cn("flex flex-col space-y-1.5")}>

@@ -41,9 +41,9 @@ const ConfirmRegistration = () => {
     }
 
     return (
-        <div className="m-2">
+        <div className="m-2 grow container">
             <h1 className="text-2xl font-bold">Please Confirm Registration</h1>
-            <form className={cn("space-y-1.5")} onSubmit={handleSubmit(handleRegistration)}>
+            <form className={cn("space-y-4 m-8")} onSubmit={handleSubmit(handleRegistration)}>
                 <div className="flex flex-col space-y-2">
                     <label htmlFor="email">Email</label>
                     <Input type="email" id="email" {...register("email", {required: true})}/>
