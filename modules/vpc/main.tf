@@ -7,7 +7,7 @@ resource "aws_vpc" "main" {
   instance_tenancy = "default"
 
   tags = {
-    Name = "main"
+    Name = "cloud-nuke-vpc"
   }
 }
 
@@ -66,11 +66,6 @@ resource "aws_route_table" "public" {
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.main.id
 
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.main.id
-  }
-
   tags = {
     Name = "private_route_table"
   }
@@ -88,24 +83,36 @@ resource "aws_route_table_association" "private_associations" {
   route_table_id = aws_route_table.private.id
 }
 
-resource "aws_security_group" "default" {
-  name        = "allow_tls"
-  description = "Allow TLS inbound traffic"
+resource "aws_security_group" "lambda_sg" {
+  name        = "lambda_SG"
+  description = "Lambda security group"
   vpc_id      = aws_vpc.main.id
 
-  ingress {
-    description = "TLS from VPC"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = [aws_vpc.main.cidr_block]
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {
-    Name = "allow_tls"
+    name = "lambda_sg"
   }
 }
 
+resource "aws_security_group" "database_sg" {
+  name        = "rds_sg"
+  description = "RDS security group"
+  vpc_id      = aws_vpc.main.id
+  
+  ingress {
+    from_port                 = 5432
+    to_port                   = 5432
+    protocol                  = "TCP"
+    security_groups  = [aws_security_group.lambda_sg.id]
+  }
 
-
-
+  tags = {
+    name = "rds_sg"
+  }
+}

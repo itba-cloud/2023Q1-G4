@@ -1,0 +1,15 @@
+{
+  "name": "dailies-get",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "grupo 4",
+  "license": "ISC",
+  "dependencies": {
+    "pg": "^8.11.1",
+    "yesql": "^6.1.0"
+  }
+}

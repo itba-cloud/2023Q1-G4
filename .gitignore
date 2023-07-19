@@ -34,3 +34,6 @@ terraform.rc
 
 # Lambda build artifacts
 builds/
+
+# node.js build artifacts
+node_modules/
