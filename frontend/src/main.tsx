@@ -10,10 +10,11 @@ import {Toaster} from "@/components/ui/toaster.tsx";
 import {registerRoute} from "@/pages/Register.tsx";
 import {confirmRegistrationRoute} from "@/pages/ConfirmRegistration.tsx";
 import {dashboardRoute} from "@/pages/Dashboard.tsx";
+import {errorRoute} from "@/pages/Error.tsx";
 
 // Create the route tree using your routes
 const routeTree = rootRoute.addChildren(
-    [indexRoute, dailiesRoute.addChildren([dailyRoute]), loginRoute, registerRoute, confirmRegistrationRoute, dashboardRoute]
+    [indexRoute, dailiesRoute.addChildren([dailyRoute]), loginRoute, registerRoute, confirmRegistrationRoute, dashboardRoute, errorRoute]
 )
 
 // Create the router using your route tree

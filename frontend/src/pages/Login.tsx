@@ -2,8 +2,6 @@ import {Link, Route, useNavigate} from "@tanstack/router";
 import {rootRoute} from "@/App.tsx";
 import {useLogin} from "@/hooks/useCognito.ts";
 import {useForm} from "react-hook-form";
-import {useAuthStore} from "@/hooks/useAuthStore.ts";
-import {shallow} from "zustand/shallow";
 import {useEffect} from "react";
 import {cn} from "@/lib/utils.ts";
 import {Button} from "@/components/ui/button.tsx";
@@ -21,14 +19,11 @@ const Login = () => {
     const {register, handleSubmit, formState: {errors}} = useForm<loginFormInput>();
 
     const [login, result, error] = useLogin();
-    const {setAccessToken} = useAuthStore(state => ({setAccessToken: state.setAccessToken}), shallow);
     const navigate = useNavigate({from: '/login'});
 
     useEffect(() => {
         async function validateLogin() {
             if (!result) return;
-
-            console.log(result);
             try {
                 await subscribeUserToTeam(result.userEmail, result.teamId + 1);
             } catch (e) {

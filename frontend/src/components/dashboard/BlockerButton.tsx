@@ -33,8 +33,7 @@ export const BlockerButton: FC<BlockerButtonProps> = ({email}) => {
                     description: error.message,
                 })
             },
-            onSuccess: (data) => {
-                console.log(data)
+            onSuccess: () => {
                 toast({
                     title: "Success!",
                     description: "Your team has been notified.",

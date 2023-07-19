@@ -7,7 +7,6 @@ interface postNotificationParams extends BlockerNotification {
 
 export const notificationsApi = {
     async postNotification({subject, message, team_id}: postNotificationParams): Promise<void> {
-        console.log(team_id)
         return await api.post('/notifications', {
             id: team_id,
             message,

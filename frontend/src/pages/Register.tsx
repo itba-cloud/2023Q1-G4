@@ -32,7 +32,6 @@ const Register = () => {
 
     useEffect(() => {
         if (!result) return;
-        console.log(result);
         navigate({to: '/confirmRegistration'}).catch((e: Error) => {
             toast({
                 title: "Something went wrong",

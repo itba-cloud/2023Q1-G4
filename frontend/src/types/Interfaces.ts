@@ -5,6 +5,7 @@ export interface Daily {
     today: string;
     blocker: string;
     team_id: number;
+    role_id: Role | null;
 }
 
 export interface DailyToDisplay extends Daily {

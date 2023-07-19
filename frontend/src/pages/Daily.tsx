@@ -1,5 +1,5 @@
 import {rootRoute} from "@/App.tsx";
-import {Navigate, Route, useNavigate} from "@tanstack/router";
+import {Navigate, Route} from "@tanstack/router";
 import {cn} from "@/lib/utils.ts";
 import {useForm} from "react-hook-form";
 import {Button} from "@/components/ui/button.tsx";
@@ -11,6 +11,7 @@ import {useAuthStore} from "@/hooks/useAuthStore.ts";
 import {toast} from "@/components/ui/use-toast.ts";
 import {useAuthHeaders} from "@/hooks/useAuthHeaders.ts";
 import {Role} from "@/types/Interfaces.ts";
+import {AxiosError} from "axios";
 
 interface dailyFormInput {
     yesterday: string
@@ -31,13 +32,20 @@ const Dailies = () => {
                 blocker: data.blockers,
                 email: userEmail || "",
                 _date: new Date(),
-                team_id: (teamId || 0) + 1
+                team_id: (teamId || 0) + 1,
+                role_id: roleId
             })
         }, {
-            onError: (error: Error) => {
+            onError: (error: AxiosError) => {
+                let title = "Oops! Something went wrong.";
+                let message = error.message;
+                if (error.message === "Request failed with status code 400") {
+                    title = "Hang on!"
+                    message = "You have already submitted a daily for today."
+                }
                 toast({
-                    title: "Oops! Something went wrong.",
-                    description: error.message,
+                    title: title,
+                    description: message,
                     variant: "destructive"
                 })
             },
@@ -51,7 +59,7 @@ const Dailies = () => {
     );
 
     if (roleId !== Role.DEV) {
-        return <Navigate to={"/login"}/>
+        return <Navigate from={'/'} to={"/login"}/>
     }
 
 
@@ -59,9 +67,9 @@ const Dailies = () => {
         mutate(data)
     }
 
-    return <div className="m-3 space-y-1.5 grow">
+    return <div className="m-3 space-y-1.5 grow container">
         <h1 className={cn("text-2xl font-bold")}>Fill in the details</h1>
-        <form className={"space-y-1.5"} onSubmit={handleSubmit(handleFormSubmit)}>
+        <form className={"space-y-4 m-8"} onSubmit={handleSubmit(handleFormSubmit)}>
             <div className={cn("flex flex-col space-y-1.5")}>
                 <label htmlFor="yesterday">Yesterday</label>
                 <Textarea id="yesterday" {...register("yesterday", {required: true})} className={cn("border-2")}/>
