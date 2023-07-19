@@ -18,7 +18,6 @@
 | [Ana Cruz](https://github.com/anitacruz) | 60476 | 25% |
 | [Matías Lombardi](https://github.com/matiaslombardi) | 60527 | 25% |
 
-
 ## Descripción
 
 ### Problema
@@ -44,7 +43,8 @@ monitorear las dailies pasadas.
 
 ## Arquitectura
 
-El diagrama completo de la arquitectura se encuentra dentro de [`/assets/architecture.pdf`](/assets/architecture.pdf).
+El diagrama original de la arquitectura se encuentra dentro de [`/assets/architecture.pdf`](/assets/architecture.pdf).
+Mientras que el diagrama final realizado se encuentra dentro de [`/assets/architecture-final.pdf`](/assets/architecture-final.pdf).
 
 ## Módulos en Terraform
 
