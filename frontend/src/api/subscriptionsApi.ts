@@ -4,7 +4,7 @@ import {
   InternalServerError,
 } from "@/types/HttpTypes";
 import { api } from "./api";
-import { AxiosError, AxiosPromise, HttpStatusCode } from "axios";
+import { AxiosPromise, HttpStatusCode } from "axios";
 
 const subscriptionsPath = "/subscriptions";
 

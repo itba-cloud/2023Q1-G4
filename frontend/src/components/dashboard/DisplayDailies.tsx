@@ -42,7 +42,7 @@ export const DisplayDailies = () => {
                                     </h3>
                                 </div>
                                 {
-                                    daily._date.toString().slice(0, 10) === new Date().toString().slice(0, 10) && <BlockerButton email={daily.email}/>
+                                    daily._date.toString().slice(0, 10) === new Date().toISOString().slice(0, 10) && <BlockerButton email={daily.email}/>
                                 }
                             </div>
                             <div className={cn("grid grid-cols-3 gap-3")}>
