@@ -1,9 +1,8 @@
-const roles = {
-	pm: 0,
-	dev: 1 
-}
-
 exports.handler = async (event) => {
+	const roles = {
+		pm: 0,
+		dev: 1 
+	}
 	const { Client } = require('pg');
 	// https://stackoverflow.com/questions/32610213/node-postgres-named-parameters-query-nodejs
 
@@ -19,35 +18,23 @@ exports.handler = async (event) => {
 		};
 	}
 
-	if (roles.pm !== event.queryStringParameters.role_id) {
+	if (roles.pm !== parseInt(event.queryStringParameters.role_id)) {
 		return {
 			statusCode: 401,
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 				'Access-Control-Allow-Methods': 'POST'
 			},
-			body: JSON.stringify({ message: 'You are not a DEV' })
+			body: JSON.stringify({ message: 'You are not a PM' })
 		};
 	}
 	//FINALIZE CHECK
 
 	const sql = require('yesql').pg;
-	let text = `SELECT * FROM dailies WHERE true `;
-	let values = {};
-
-	if (event.queryStringParameters) {
-		const queries = event.queryStringParameters;
-
-		if (queries.role_id) {
-			text += `AND email LIKE :email `;
-			values['email'] = queries.email;
-		}
-
-		if (queries.team_id) {
-			text += `AND team_id = :team_id `;
-			values['team_id'] = queries.team_id;
-		}
-	}
+	let text = `SELECT * FROM dailies WHERE team_id = :team_id `;
+	let values = {
+		team_id: event.queryStringParameters.team_id
+	};
 
     text += `ORDER BY _date`;
 

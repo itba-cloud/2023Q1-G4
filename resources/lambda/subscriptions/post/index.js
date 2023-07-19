@@ -51,7 +51,7 @@ exports.handler = async (event, context) => {
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Methods': 'POST'
         },
-        body: JSON.stringify({ message: 'Already subscripted' })
+        body: JSON.stringify({ message: 'Already subscribed' })
       }
     }
   }

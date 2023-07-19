@@ -1,14 +1,14 @@
-const roles = {
-	pm: 0,
-	dev: 1 
-}
-
 exports.handler = async (event) => {
+	const roles = {
+		pm: 0,
+		dev: 1 
+	}
+
 	const { Client } = require('pg');
 	const body = JSON.parse(event.body);
 
 	// DEV CHECK
-	if (roles.dev !== body.role_id) {
+	if (roles.dev !== parseInt(body.role_id)) {
 		return {
 			statusCode: 401,
 			headers: {
